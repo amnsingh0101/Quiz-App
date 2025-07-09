@@ -1,0 +1,125 @@
+
+body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    background-color: rgb(49, 30, 83); 
+    margin: 0;
+    padding: 0;
+}
+
+.head {
+    font-size: 55px;
+    font-weight: bold;
+    margin-right: 35%;
+    margin-bottom: 20px;
+    background-color: rgb(249, 248, 251);
+    text-align: center;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #de5917;
+    background: transparent;
+}
+
+.auth-form-container1 {
+    margin-left: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.forms1 {
+    width: 100%;
+}
+
+.input-field1 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.drop {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.button-31 {
+    appearance: none;
+    background-color: rgb(232, 110, 10);
+    border-radius: 40px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(237, 5, 5, 0.1);
+    color:white;
+    cursor: pointer;
+    font-family: "JetBrains Mono", monospace;
+    height: 48px;
+    line-height: 1;
+    padding: 0 20px;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.15s;
+    user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: background-color, transform;
+    font-size: 18px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.button-31:hover {
+    background-color: rgb(9, 71, 29);
+    transform: translateY(-2px);
+}
+
+.button-31:active {
+    background-color: #201e47;
+    transform: translateY(2px);
+}
+
+.question-sec {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.options-multiple {
+    margin-top: 15px;
+}
+
+label {
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.options-tf {
+    margin-top: 15px;
+}
+
+.options-tf input[type="radio"] {
+    margin-right: 5px;
+}
+
+.options-tf label {
+    font-size: 16px;
+    margin-right: 15px;
+    color: #333;
+}
