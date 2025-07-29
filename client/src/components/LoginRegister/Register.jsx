@@ -11,9 +11,8 @@ const Register = (props) => {
   const [name, setName] = useState("");
   const [role, setRole] = useState("user"); // default role
   const [isError, setisError] = useState(false);
-  const [error, setError] = useState("Some Error Occured!")
+  const [error, setError] = useState("Some Error Occured!");
   const [isLoading, setIsLoading] = useState(false);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,43 +20,41 @@ const Register = (props) => {
     if (role === "user") {
       setisError(false);
       if (!name || !email || !pass) {
-        setError("Some Fields are Missing!")
+        setError("Some Fields are Missing!");
         setIsLoading(false);
         setisError(true);
-        return ;
+        return;
       }
 
       try {
-        const response = await axios.post(
-          `${BACK_URL}/register-user`,
-          {
-            name: name,
-            email: email,
-            password: pass,
-          }
-        );
+        const response = await axios.post(`${BACK_URL}/register-user`, {
+          name: name,
+          email: email,
+          password: pass,
+        });
         // console.log(response);
         if (!response) {
           setIsLoading(false);
           setisError(true);
-          setError("Something went wrong")
+          setError("Something went wrong");
           return;
         } else {
-            setError(response.data.error);
-            setisError(true);
+          setError(response.data.error);
+          setisError(true);
         }
         if (response.data.error === "User already Exist") {
           setIsLoading(false);
           setisError(true);
           setError(response.data.error);
-        } 
-        else if (response.data.error === "Already registered as Admin"){
-            // console.log(response.data.error);
-            setIsLoading(false);
-            setisError(true);
-            setError(response.data.error);
-        } else{
-          window.alert("Registered successfully!\nYou can head to the login page.");
+        } else if (response.data.error === "Already registered as Admin") {
+          // console.log(response.data.error);
+          setIsLoading(false);
+          setisError(true);
+          setError(response.data.error);
+        } else {
+          window.alert(
+            "Registered successfully!\nYou can head to the login page."
+          );
           isLoading(false);
           isError(false);
         }
@@ -73,14 +70,12 @@ const Register = (props) => {
       }
 
       try {
-        const response = await axios.post(
-          `${BACK_URL}/register-admin`,
-          {
-            name: name,
-            email: email,
-            password: pass,
-          }
-        );
+        console.log(BACK_URL);
+        const response = await axios.post(`${BACK_URL}/register-admin`, {
+          name: name,
+          email: email,
+          password: pass,
+        });
         if (!response) {
           setIsLoading(false);
           setisError(true);
@@ -91,12 +86,12 @@ const Register = (props) => {
         if (response.data.error === "Alreday registered as User") {
           window.alert("Already registered as User");
           setIsLoading(false);
-        } else{
+        } else {
           setisError(false);
           console.log(response.data.error);
           setIsLoading(false);
           window.alert("Registered successfully error");
-        } 
+        }
       } catch (error) {
         setIsLoading(false);
         setisError(true);
@@ -108,7 +103,7 @@ const Register = (props) => {
     <div>
       <Header />
       <div className="body">
-      <div className="home-bannerImage-container">
+        <div className="home-bannerImage-container">
           <img src={BannerBackground} alt="" />
         </div>
         <div className="auth-form-container">
@@ -179,8 +174,8 @@ const Register = (props) => {
               </button>
             </form>
             {isError ? (
-              <div className="error" style={{marginTop: "20px"}}>
-                <span style={{color: "red"}}>{error}</span>
+              <div className="error" style={{ marginTop: "20px" }}>
+                <span style={{ color: "red" }}>{error}</span>
               </div>
             ) : (
               ""
