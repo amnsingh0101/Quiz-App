@@ -4,7 +4,12 @@ import Connection from './database/db.js';
 import cors from 'cors';
 
 const app = express();
-app.use(cors());
+const allowedOrigins = ['https://quest-lhm9.onrender.com'];
+// app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true // if you use cookies or auth headers
+}));
 Connection();
 app.use(express.json())
 app.use('/', router);
