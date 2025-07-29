@@ -15,6 +15,7 @@ const adminSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  
   createdQuizes: [
     {
       quiz: {
