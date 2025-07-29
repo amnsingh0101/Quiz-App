@@ -1,72 +1,79 @@
 import React, { useState, useEffect } from "react";
-import "./Result.css";
-import Header from "../Header";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Header from "../Header";
+import BannerBackground from "./home-banner-background.png";
+import "./Result.css";
+import LeaderBoard from "./LeaderBoard";
+import { BACK_URL } from "../backend";
 
 const Result = () => {
   const [quizData, setQuizData] = useState([]);
   const location = useLocation();
   const { send } = location.state || {};
   const navigate = useNavigate();
+  const [openMenu, setOpenMenu] = useState(false);
+ 
   useEffect(() => {
-    // console.log(send);
-    getResult();
-  }, []);
+    if (send && send.userId && send.quizId) {
+      getResult();
+    }
+  }, [send]);
 
   const getResult = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/get-result", {
+      const response = await axios.post(`${BACK_URL}/get-result`, {
         userId: send.userId,
         quizId: send.quizId,
       });
-      if (response) {
-        console.log(response);
+      if (response.data.quizDetails) {
         setQuizData(response.data.quizDetails);
-        console.log(quizData);
+      } else {
+        console.log("No quiz details found in response");
       }
     } catch (error) {
-      console.log("Some Error Occured while getting result", error);
+      console.log("Error fetching quiz result:", error);
     }
   };
-  if (!quizData) {
-    return <div>Loading...</div>;
-  }
-
-
 
   const getLeaderBoard = () => {
-    const quiz = {quizId: send.quizId};
-    navigate('/leaderboard', {state: {quiz}});
-  }
+    const quiz = { quizId: send.quizId };
+    navigate("/leaderboard", { state: { quiz } });
+  };
+
   return (
     <div>
       <Header />
+      <div className="home-bannerImage-container">
+        <img src={BannerBackground} alt="Banner" className="img" />
+      </div>
       <div className="Result-container">
         <h1>Quiz Result</h1>
-        {/* Score:  */}
         <div className="show-quest">
-          {quizData.map.length !== 0 ? (
-            quizData.map((Question, index) => (
+          {quizData.length !== 0 ? (
+            quizData.map((question, index) => (
               <div className="question-sec" key={index}>
-                {index + 1}. {Question.question}
+                <div>
+                  {index + 1}. {question.question}
+                </div>
                 <div className="options-multiple">
-                  {Question.options.map((op,jk)=>(
-                    // console.log(typeof op)
-                    <div key={jk}><input type="radio" disabled />{op}</div>
+                  {question.options.map((option, idx) => (
+                    <div key={idx}>
+                      <input type="radio" disabled />
+                      {option}
+                    </div>
                   ))}
                 </div>
-                <div>Correct Answer: {Question.correctAnswer}</div>
-                <div>Marked Answer: {Question.userSelectedOption}</div>
+                <div>Correct Answer: {question.correctAnswer}</div>
+                <div>Marked Answer: {question.userSelectedOption}</div>
               </div>
             ))
           ) : (
             <div>Nothing to show</div>
           )}
         </div>
-        
       </div>
-      <button onClick={getLeaderBoard}>LeaderBoard</button>
+      <button onClick={getLeaderBoard}>Leaderboard</button>
     </div>
   );
 };

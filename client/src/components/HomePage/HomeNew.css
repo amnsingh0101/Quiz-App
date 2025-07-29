@@ -96,9 +96,9 @@
     align-items: flex-start;
   }
   .primary-heading1 {
-    font-size: ;
+    font-size: 40px3;
     color: #4c4c4c;
-    /* line-height: 5rem; */
+    /* line-height: 5rem;   */
     max-width: 600px;
   }
   .primary-text {
@@ -130,7 +130,7 @@
     background-color: #e48f0f;
   }
   .about-section-container {
-    margin-top: 20rem;
+    margin-top: 5rem;
     position: relative;
     display: flex;
     align-items: center;

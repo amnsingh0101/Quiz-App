@@ -4,7 +4,10 @@ import "./quizcode.css";
 import { useNavigate } from "react-router-dom";
 import LoginContext from "../CustomQuizz/context/LoginContext";
 import Login from "../LoginRegister/Login";
+
+import BannerBackground from './home-banner-background.png';
 import axios from "axios";
+import { BACK_URL } from "../backend";
 
 const Quizcode = () => {
   const [quizCode, setquizCode] = useState("");
@@ -22,7 +25,7 @@ const Quizcode = () => {
   const getHistory = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/get-userHistory",
+        `${BACK_URL}/get-userHistory`,
         {
           userId: loginId.userId,
         }
@@ -43,7 +46,7 @@ const Quizcode = () => {
     // getHistory();
     // console.log(quizCode)
 
-    const response = await axios.post("http://localhost:8000/get-quiz", {
+    const response = await axios.post(`${BACK_URL}/get-quiz`, {
       quizId: quizCode,
     });
 
@@ -73,7 +76,10 @@ const Quizcode = () => {
       {loginId ? (
         <div>
           <Header />
-          <div>Welcome {loginId.userName}</div>
+          {/* <div>Welcome {loginId.userName}</div> */}
+          <div className="home-bannerImage-container">
+            <img src={BannerBackground} alt="Banner" className="img" />
+          </div>
           <div className="verification-container">
             <div className="codeheader">
               <div className="codetext">Verification Code</div>

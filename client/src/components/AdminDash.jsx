@@ -8,12 +8,13 @@ import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Login from "./LoginRegister/Login";
+import { BACK_URL } from "./backend";
 const AdminDash = () => {
   const [quizDetail, setQuizDetail] = useState([]);
   const navigate = useNavigate();
 
   const { loginId } = useContext(LoginContext);
-  console.log('Login ID on page load:', loginId);
+  // console.log('Login ID on page load:', loginId);
 
   useEffect(() => {
 
@@ -26,8 +27,8 @@ const AdminDash = () => {
   }, [loginId]);
 
   const deleteQuiz = async (i) => {
-    console.log(loginId.quizIds, loginId.quizIds[i]);
-    const response = await axios.post("http://localhost:8000/delete-quiz", {
+    // console.log(loginId.quizIds, loginId.quizIds[i]);
+    const response = await axios.post(`${BACK_URL}/delete-quiz`, {
       quizId: loginId.quizIds[i],
     });
 
@@ -41,7 +42,7 @@ const AdminDash = () => {
     // console.log('here is login id',loginId.adminId)
     try {
       // console.log('here is quizids...',loginId.quizIds)
-      const response = await axios.post("http://localhost:8000/get-quizzes", {
+      const response = await axios.post(`${BACK_URL}/get-quizzes`, {
         quizIds: loginId.quizIds,
       });
       if (response) {
@@ -54,8 +55,8 @@ const AdminDash = () => {
   };
 
   const viewQuiz = async(i) => {
-    console.log(quizDetail[i]._id)
-    const response = await axios.post('http://localhost:8000/get-quiz',{
+    // console.log(quizDetail[i]._id)
+    const response = await axios.post(`${BACK_URL}/get-quiz`,{
       quizId: quizDetail[i]._id
     })
     if(!response){

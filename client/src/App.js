@@ -24,12 +24,14 @@ import Leaderboard from './components/Results/LeaderBoard';
 
 function App() {
   // const [currentForm,serCurrentForm]=useState('login');
+  console.log("Hello World")
   return (
     // <AdminDash />
+   
     <LoginContextProvider>
     <Router>
       <Routes>
-        <Route index path='/' element={<HomeNew />}></Route>
+        <Route index path='/' element={<HomeNew />} ></Route>
         <Route path='/register' element={<Register />}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/admin' element={<AdminDash />}></Route>
@@ -38,7 +40,7 @@ function App() {
         <Route path='/user' element={<Quizcode />}></Route>
         <Route path='/detail-quiz' element={<AdminQuizDetail />}></Route>
         <Route path='/instruction' element={<Instruction />}></Route>
-        <Route path='/quiz' element={ <UserQuizContextProvider><UserQuiz /></UserQuizContextProvider>}></Route>
+        <Route path='/quiz' element={ <UserQuiz />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/submitted' element={<Submitted />}></Route>

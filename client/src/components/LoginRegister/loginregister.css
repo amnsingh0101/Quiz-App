@@ -16,14 +16,15 @@
   }
    
 .body{
-   margin-left: 37%;
+   margin-left: 25%;
    margin-top: 8%;
 } 
 
 .auth-form-container{
     position: relative;
-    max-width: 430px;
-    width: 100%;
+    max-width: 600px;
+    /* width: 100%; */
+
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
@@ -112,3 +113,24 @@ select{
     border-bottom: 2px solid #ccc;
     border-top: 2px solid transparent;
 }
+
+/* Add this CSS to loginregister.css */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #09f;
+    animation: spin 1s ease infinite;
+    margin: 0 auto;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

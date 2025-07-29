@@ -6,6 +6,7 @@ import BannerBackground from "./home-banner-background.png";
 import Header from "../Header";
 import axios from "axios";
 import LoginContext from "../CustomQuizz/context/LoginContext";
+import { BACK_URL } from "../backend";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ const Login = (props) => {
   const [role, setRole] = useState("user");
   const [isError, setisError] = useState(false);
   const [error, setError] = useState("Some Error Occured!");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,21 +22,24 @@ const Login = (props) => {
 
   const check = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (role === "user") {
       setisError(false);
       if (!email || !pass) {
         setError("Some Fields are Missing!");
+        setIsLoading(false);
         setisError(true);
         return;
       }
 
       try {
-        const response = await axios.post("http://localhost:8000/login-user", {
+        const response = await axios.post(`${BACK_URL}/login-user`, {
           email: email,
           password: pass,
         });
         // console.log(response);
         if (!response) {
+          setIsLoading(false);
           setisError(true);
           setError("Something went wrong");
           return;
@@ -43,10 +48,12 @@ const Login = (props) => {
         }
         if (response.data.message === "User does not exist") {
           // window.alert('User does not exist')
+          setIsLoading(false);
           setisError(true)
           setError(response.data.message);
           return;
         } else if (response.data.message === "Invalid Password") {
+          setIsLoading(false);
           setisError(true)
           setError("Invalid email or Password");
           return ;
@@ -57,6 +64,7 @@ const Login = (props) => {
         navigate('/user')
         // window.alert("User Login successfully");
       } catch (error) {
+        setIsLoading(false);
         setisError(true);
         setError("An error occurred during login");
       }
@@ -64,17 +72,19 @@ const Login = (props) => {
       setisError(false);
       if (!email || !pass) {
         setError("Some Fields are Missing!");
+        setIsLoading(false);
         setisError(true);
         return;
       }
 
       try {
-        const response = await axios.post("http://localhost:8000/login-admin", {
+        const response = await axios.post(`${BACK_URL}/login-admin`, {
           email: email,
           password: pass,
         });
         // console.log(response);
         if (!response) {
+          setIsLoading(false);
           setisError(true);
           setError("Something went wrong");
           return;
@@ -83,9 +93,11 @@ const Login = (props) => {
         }
         if (response.data.message === "Admin does not exist") {
           setError(response.data.message);
+          setIsLoading(false);
           setisError(true);
           return;
         } else if (response.data.message === "Invalid Password") {
+          setIsLoading(false);
           setisError(true);
           setError("Invalid email or Password");
           return ;
@@ -94,6 +106,7 @@ const Login = (props) => {
         navigate('/admin');
         // window.alert("Admin Login successfully");
       } catch (error) {
+        setIsLoading(false);
         setisError(true);
         setError("An error occurred during login");
       }
@@ -163,8 +176,9 @@ const Login = (props) => {
                 className="button-30"
                 role="button"
                 onClick={check}
+                disabled={isLoading}
               >
-                Login
+                {isLoading ? <div className="spinner"></div> : "Login"}
               </button>
               {isError ? (
                 <div className="error" style={{ marginTop: "20px" }}>

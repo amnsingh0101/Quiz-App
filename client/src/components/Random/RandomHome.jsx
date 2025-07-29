@@ -5,6 +5,7 @@ import "./RandomHome.css";
 import BannerBackground from "./home-banner-background.png";
 import LoginContext from "../CustomQuizz/context/LoginContext";
 import Login from "../LoginRegister/Login";
+import { BACK_URL } from "../backend";
 const RandomHome = () => {
   const [data, setData] = useState([]);
   const [saveActive, setsaveActive] = useState(true);
@@ -87,7 +88,7 @@ const RandomHome = () => {
       return array;
     };
     try {
-      const response = await axios.post("http://localhost:8000/add-quiz", {
+      const response = await axios.post(`${BACK_URL}/add-quiz`, {
         name: name,
         description: desc,
         dateCreated: new Date(),
@@ -134,13 +135,15 @@ const RandomHome = () => {
   }
   return (
     <div>
+        <Header />
       {adminId !== '' ? (<div>
-      <Header />
-      <div className="head">Create Random Quizz</div>
-      <div className="body1">
-        <div className="home-bannerImage-container">
+    
+      <div className="home1-bannerImage-container">
           <img src={BannerBackground} alt="" />
         </div>
+      <div className="head">Create Random Quizz</div>
+    
+      <div className="body1">
         <div className="auth-form-container1">
           <hr />
           <div className="forms1">

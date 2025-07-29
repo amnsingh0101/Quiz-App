@@ -2,97 +2,108 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./AdminQuizDetail.css";
 import BannerBackground from "./home-banner-background.png";
-
 import Header from "./Header";
 import Login from "./LoginRegister/Login";
 import axios from "axios";
+import { BACK_URL } from "./backend";
 
 const AdminQuizDetail = () => {
   const location = useLocation();
   const { detail } = location.state || {};
-  const [isResultPublished, setisResultPublished] = useState(false);
-  const [isChecked, setIsChecked] = useState(
-    detail.quiz.attemptedBy.map(() => true)
-  );
-  const [userHistory, setUserHistroy] = useState([]);
-  const [isclicked, setIsclicked] = useState(false);
-  const userIds = [];
-  useEffect(()=>{
-    getHistory();
-  },[])
+
+  const [isResultPublished, setIsResultPublished] = useState(false);
+  const [isChecked, setIsChecked] = useState([]);
+  const [userHistory, setUserHistory] = useState([]);
+  const [isClicked, setIsClicked] = useState(false);
+
+  useEffect(() => {
+    if (detail && detail.quiz) {
+      getHistory();
+      checkResultPublished();
+      setIsChecked(new Array(detail.quiz.attemptedBy.length).fill(true));
+    }
+  }, [detail]);
+
   const handleCheckboxChange = (index) => {
     const newCheckedState = [...isChecked];
     newCheckedState[index] = !newCheckedState[index];
     setIsChecked(newCheckedState);
-    // console.log(userIds);
   };
 
   const getHistory = async () => {
-    try{
-      const response = await axios.post("http://localhost:8000/admin-user-history",{
+    try {
+      const response = await axios.post(`${BACK_URL}/admin-user-history`, {
         quizId: detail.quiz._id
-      })
-      if(response){
-        setUserHistroy(response.data.result);
-        console.log(response.data.result);
+      });
+      if (response.data.result) {
+        setUserHistory(response.data.result);
+      } else {
+        console.log("No user history found in response");
       }
-      try{
-        const response = await axios.post('http://localhost:8000/check-result-published',{
-          adminId: detail.adminId,
-          quizId: detail.quiz._id
-        })
-        if(response){
-          // console.log('check',response.data.isresultPublished)
-          setisResultPublished(response.data.isresultPublished)
-        }
-      }catch(error){
-        console.log('Some error occured while checking result published',error);
-      }
-    }catch(error){
-      console.log('Some error occured during getting history',error)
-    }
-  }
-
-  const publishResult = async () => {
-    detail.quiz.attemptedBy.map((user,i)=>userIds.push({userId: user._id, isAllowedToViewResult: isChecked[i]}))
-    // console.log(userIds)
-    try{
-      // const res = {
-      //   adminId: detail.adminId,
-      //   userIds,
-      //   quizId: detail.quiz._id
-      // }
-      // console.log('res',res);
-      const response = await axios.post('http://localhost:8000/publish-result',{
-        adminId: detail.adminId,
-        userIds: userIds,
-        quizId: detail.quiz._id
-      })
-      if(response){
-        console.log('Response',response)
-        setIsclicked(true);
-        window.alert('Quiz Result published successfully');
-      }
-    }catch(error){
-      console.log('Some Error occured during publishing result',error)
+    } catch (error) {
+      console.log('Error fetching user history:', error);
     }
   };
 
-  const calculateScore = async () =>{
-    try{
-      const response = await axios.post('http://localhost:8000/calculate-score',{
+  const checkResultPublished = async () => {
+    try {
+      const response = await axios.post(`${BACK_URL}/check-result-published`, {
+        adminId: detail.adminId,
         quizId: detail.quiz._id
-      })
-      if(response){
-        window.alert('Score calculated successfully');
+      });
+      if (response.data.isresultPublished !== undefined) {
+        setIsResultPublished(response.data.isresultPublished);
+      } else {
+        console.log("No result published status found in response");
       }
-    }catch(error){
-      console.log('Some Error occured during calculating score',error);
+    } catch (error) {
+      console.log('Error checking result published status:', error);
     }
-  }
+  };
+
+  const publishResult = async () => {
+    const userIds = detail.quiz.attemptedBy.map((user, i) => ({
+      userId: user._id,
+      isAllowedToViewResult: isChecked[i]
+    }));
+
+    try {
+      const response = await axios.post(`${BACK_URL}/publish-result`, {
+        adminId: detail.adminId,
+        userIds: userIds,
+        quizId: detail.quiz._id
+      });
+      if (response.data) {
+        setIsClicked(true);
+        setIsResultPublished(true);
+        window.alert('Quiz Result published successfully');
+      } else {
+        console.log('No response data received after publishing result');
+      }
+    } catch (error) {
+      console.log('Error publishing result:', error);
+    }
+  };
+
+  const calculateScore = async () => {
+    try {
+      const response = await axios.post(`${BACK_URL}/calculate-score`, {
+        quizId: detail.quiz._id
+      });
+      if (response.data) {
+        window.alert('Score calculated successfully');
+        getHistory(); // Refresh user history after score calculation
+      } else {
+        console.log('No response data received after calculating score');
+      }
+    } catch (error) {
+      console.log('Error calculating score:', error);
+    }
+  };
+
   return (
     <div>
-      {detail !== undefined ? (
+      {detail ? (
         <div className="main-detail">
           <Header />
           <div className="home-bannerImage-container">
@@ -102,36 +113,22 @@ const AdminQuizDetail = () => {
             <div className="details">
               <div>
                 <div className="quiz-name">Quiz Name : {detail.quiz.name}</div>
-                <div className="quiz-name">
-                  {" "}
-                  Quiz Description : {detail.quiz.description}
-                </div>
+                <div className="quiz-name">Quiz Description : {detail.quiz.description}</div>
               </div>
               <div>
-                <div className="quiz-name">
-                  {" "}
-                  Quiz Start Time : {detail.quiz.startTime.split("T")[0]}
-                </div>
-                <div className="quiz-name">
-                  Quiz End Time : {detail.quiz.endTime.split("T")[0]}
-                </div>
+                <div className="quiz-name">Quiz Start Time : {detail.quiz.startTime.split("T")[0]}</div>
+                <div className="quiz-name">Quiz End Time : {detail.quiz.endTime.split("T")[0]}</div>
               </div>
               <div>
-                <div className="quiz-name">
-                  Date :{detail.quiz.dateCreated.split("T")[0]}
-                </div>
-                <div className="quiz-name">
-                  Total Time of Quiz={detail.quiz.duration} mins
-                </div>
+                <div className="quiz-name">Date : {detail.quiz.dateCreated.split("T")[0]}</div>
+                <div className="quiz-name">Total Time of Quiz: {detail.quiz.duration} mins</div>
               </div>
             </div>
             <div className="quest-detail">
               {detail.quiz.questions.map((ques, i) => (
                 <div className="questions-detail" key={i}>
                   <div className="ques-text">
-                    <div>
-                      {i + 1}. {ques.questionText}
-                    </div>
+                    <div>{i + 1}. {ques.questionText}</div>
                     <div>Marks: {ques.marks}</div>
                   </div>
                   <div className="ques-options">
@@ -143,11 +140,7 @@ const AdminQuizDetail = () => {
                     ))}
                   </div>
                   <div className="correct-ans">
-                    {ques.questionType !== "short-answer" ? (
-                      <div>Correct-Answer: {ques.correctAnswer}</div>
-                    ) : (
-                      ""
-                    )}
+                    {ques.questionType !== "short-answer" && <div>Correct Answer: {ques.correctAnswer}</div>}
                   </div>
                 </div>
               ))}
@@ -155,53 +148,48 @@ const AdminQuizDetail = () => {
           </div>
           <div className="user-detail-attempted">
             <p>User Attempted Quiz</p>
-            <table
-              className="table table-striped table-hover"
-              id="table-history"
-            >
+            <table className="table table-striped table-hover" id="table-history">
               <thead>
                 <tr>
                   <th scope="col">S. No.</th>
                   <th scope="col">User-Name</th>
-                  
                   <th scope="col">Time-taken</th>
                   <th scope="col">Score</th>
-                  <th scope="col">Manage</th>
+                  <th scope="col">Allow Result View</th>
                 </tr>
               </thead>
-
               <tbody>
                 {userHistory.length !== 0 ? (
-                  userHistory.map((usr, ij) => (
-                    <tr key={ij}>
-                      <th scope="row">{ij + 1}</th>
+                  userHistory.map((usr, index) => (
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
                       <td>{usr.name}</td>
-                      
                       <td>{usr.timeTaken} mins</td>
                       <td>{usr.score}</td>
-                      <input
-                        type="checkbox"
-                        checked={isChecked[ij]}
-                        onChange={() => handleCheckboxChange(ij)}
-                      />
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={isChecked[index]}
+                          onChange={() => handleCheckboxChange(index)}
+                        />
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6">No user attempted till now</td>
+                    <td colSpan="5">No users attempted the quiz yet.</td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
           <div className="publish-quiz">
-          <button className="btn btn-primary1" onClick={calculateScore}>
-              Calculate Score
-            </button>
-            {isResultPublished && isclicked? (<button className="btn btn-primary1" disabled>Result Published</button>): (<button className="btn btn-primary1" onClick={publishResult}>
-              Publish Result
-            </button>)}
-            
+            <button className="btn btn-primary1" onClick={calculateScore}>Calculate Score</button>
+            {isResultPublished && isClicked ? (
+              <button className="btn btn-primary1" disabled>Result Published</button>
+            ) : (
+              <button className="btn btn-primary1" onClick={publishResult}>Publish Result</button>
+            )}
           </div>
         </div>
       ) : (

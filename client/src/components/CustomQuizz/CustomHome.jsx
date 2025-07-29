@@ -10,6 +10,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import axios from "axios";
 import LoginContext from "./context/LoginContext.js";
 import Login from "../LoginRegister/Login.jsx";
+import { BACK_URL } from "../backend.js";
 const CustomHome = () => {
   const [isCreated, setisCreated] = useState(false);
   const [isgetCode, setisgetCode] = useState(false);
@@ -73,7 +74,7 @@ const CustomHome = () => {
     return ;
     }
     try{
-      const response = await axios.post('http://localhost:8000/add-quiz',{
+      const response = await axios.post(`${BACK_URL}/add-quiz`,{
         name: name,
         description: desc,
         dateCreated: new Date(),

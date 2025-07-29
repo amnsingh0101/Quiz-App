@@ -1,118 +1,24 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import 'tailwindcss/tailwind.css';
 
 const HomeMid = () => {
   return (
-    <html lang="en">
-    <head>
-      <meta charSet="UTF-8" />
-      <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-      <style>
-        {`
-
-          body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden; 
-          }
-         {
-          font-family: 'Montserrat', sans-serif;
-        }
-        .bg-light {
-          background-color: transparent !important;
-        }
-        .carousel-item {
-          height:100%;
-        }
-        .carousel-caption {
-          
-        }
-        .carousel-caption h5 {
-          font-size: 45px;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          
-        }
-        .carousel-caption p {
-          width: 60%;
-          margin: auto;
-          font-size: 18px;
-          line-height: 1.9;
-        }
-        .carousel-caption a {
-          text-transform: uppercase;
-          text-decoration: none;
-          background: darkorange;
-          padding: 10px 30px;
-          display: inline-block;
-          color: #000;
-          margin-top: 15px;
-        }
-        .w-100 {
-          height: 100vh;
-        }
-        @media only screen and (max-width: 767px) {
-          .navbar-nav {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.5);
-          }
-          .carousel-caption {
-            bottom: 165px;
-          }
-          .carousel-caption h5 {
-            font-size: 17px;
-          }
-          .carousel-caption a {
-            padding: 10px 15px;
-            font-size: 15px;
-          }
-        }
-
-        #home-cap{
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-        `}
-      </style>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap"
-        rel="stylesheet"
-      />
-      <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-      />
-      <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
-        rel="stylesheet"
-      />
-    </head>
-    <body>
-      <div className="carousel slide" data-bs-ride="carousel" id="carouselExampleIndicators" style={{}}>
-        <div className="carousel-inner">
-          <div className="carousel-item active">
-            <img alt="..." className="d-block w-100" src="https://i.postimg.cc/LsTXqTNZ/1.jpg" style={{height: '90%'}}/>
-            <div className="carousel-caption" id='home-cap'>
-              <h5 className="animated bounceInRight" style={{ animationDelay: '1s' }}>QUEST</h5>
-              <p className="animated bounceInLeft d-none d-md-block" style={{ animationDelay: '2s' }}>
-                Create your <strong>Own</strong> Quiz and <strong>Random</strong> Quiz
-              </p>
-              <p className="animated bounceInRight" style={{ animationDelay: '3s' }}>
-                <Link to={'/register'}>Get Started</Link>
-              </p>
-            </div>
-          </div>
+    <div className="relative h-screen overflow-hidden bg-cover bg-center" style={{ backgroundImage: "url('https://i.postimg.cc/LsTXqTNZ/1.jpg')" }}>
+      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div className="relative z-10 flex h-full items-center justify-center text-center text-white">
+        <div id="home-cap" className="animated fadeIn flex flex-col items-center justify-center space-y-6">
+          <h1 className="animated bounceInRight text-6xl font-extrabold uppercase tracking-wide leading-tight" style={{ animationDelay: '1s' }}>Quest</h1>
+          <p className="animated bounceInLeft text-lg md:text-2xl md:w-2/3 leading-relaxed" style={{ animationDelay: '2s' }}>
+            Create your <strong>Own</strong> Quiz and <strong>Random</strong> Quiz
+          </p>
+          <Link to="/register" className="animated bounceInRight bg-orange-500 hover:bg-orange-600 px-6 py-3 md:px-10 md:py-4 rounded-full text-lg font-semibold uppercase transition duration-300 shadow-lg" style={{ animationDelay: '3s' }}>
+            Get Started
+          </Link>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
       </div>
-    </body>
-  </html>
+    </div>
+  );
+};
 
-  )
-}
-
-export default HomeMid
+export default HomeMid;

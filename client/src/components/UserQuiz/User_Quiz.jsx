@@ -4,6 +4,7 @@ import Header from "../Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserQuizContext from "../CustomQuizz/context/UserQuizContext";
 import axios from "axios";
+import { BACK_URL } from "../backend";
 
 const questions = [
   {
@@ -185,7 +186,7 @@ const UserQuiz = () => {
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Calculate timeTaken in seconds
   const timeTakenInMinutes = Math.floor(timeTakenInSeconds / 60);
     console.log(timeTakenInSeconds,timeTakenInMinutes);
-    const response = await axios.post('http://localhost:8000/save-quiz',{
+    const response = await axios.post(`${BACK_URL}/save-quiz`,{
         userId: newDetail.userId,
         quizId: newDetail.quiz._id,
         markedOptions,

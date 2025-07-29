@@ -11,7 +11,10 @@
   .question-container {
     margin-bottom: 20px;
   }
-  
+  button {
+ text-align: center;
+ justify-content: center;
+  }
   .answer-options {
     display: flex;
     flex-direction: column;
