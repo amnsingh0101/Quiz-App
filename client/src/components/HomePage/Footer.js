@@ -27,9 +27,9 @@
           </div>
           <div className="footer-section-columns">
             <span> +91-234567890</span>
-            <span>madhurbajpai@google.com</span>
+            {/* <span>madhurbajpai@google.com</span>
             <span>shantanuAswal@google.com</span>
-            <span>abhijeetSaxena@google.com</span>
+            <span>abhijeetSaxena@google.com</span> */}
           </div>
           <div className="footer-section-columns">
             <span>Terms & Conditions</span>
