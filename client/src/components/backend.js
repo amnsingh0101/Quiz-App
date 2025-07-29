@@ -1,1 +1,1 @@
-export const BACK_URL = 'http://localhost:8000'
+export const BACK_URL = 'https://quiz-app-0kyw.onrender.com'
