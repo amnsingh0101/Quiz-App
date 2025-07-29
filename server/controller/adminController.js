@@ -5,6 +5,7 @@ import Result from "../model/Result.js";
 import mongoose from "mongoose";
 
 export const addAdmin = async (req, res) => {
+  // console.log("Adding Admin");
   try {
     const { name, email, password } = req.body;
 
@@ -12,16 +13,23 @@ export const addAdmin = async (req, res) => {
       return res.status(422).json({ error: "Something is missing" });
     }
 
+    // console.log("Passed name, email, password check");
+
     const adminExist = await Admin.findOne({ email: email });
+    // console.log(adminExist);
 
     if (adminExist) {
-      return res.status(422).json({ error: "Admin already registered" });
+      return res.status(409).json({ error: "Admin already registered" });
     }
+
+    // console.log("Passed adminExist check");
 
     const userExist = await User.findOne({ email: email });
     if (userExist) {
-      return res.json({ error: "Alreday registered as User" });
+      return res.status(409).json({ error: "Already registered as User" });
     }
+
+    // console.log("Passed userExist check");
 
     const admin = new Admin({ name, email, password });
     const adminRegister = await admin.save();
@@ -29,11 +37,15 @@ export const addAdmin = async (req, res) => {
     if (adminRegister) {
       return res.status(201).json({ message: "Admin registered successfully" });
     }
-    return res.status(422).json({ error: "Cannot registered Admin" });
+
+    return res.status(500).json({ error: "Failed to register Admin" });
+
   } catch (error) {
     console.log("Error while adding admin", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 export const getAdmin = async (req, res) => {
   try {

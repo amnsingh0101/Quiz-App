@@ -1,1 +1,1 @@
-export const BACK_URL = 'https://quiz-app-0kyw.onrender.com'
+export const BACK_URL = 'https://quest-server-zl3k.onrender.com'

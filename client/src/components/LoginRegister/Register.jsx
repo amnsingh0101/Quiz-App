@@ -26,42 +26,39 @@ const Register = (props) => {
         return;
       }
 
-      try {
-        const response = await axios.post(`${BACK_URL}/register-user`, {
-          name: name,
-          email: email,
-          password: pass,
-        });
-        // console.log(response);
-        if (!response) {
-          setIsLoading(false);
-          setisError(true);
-          setError("Something went wrong");
-          return;
-        } else {
-          setError(response.data.error);
-          setisError(true);
-        }
-        if (response.data.error === "User already Exist") {
-          setIsLoading(false);
-          setisError(true);
-          setError(response.data.error);
-        } else if (response.data.error === "Already registered as Admin") {
-          // console.log(response.data.error);
-          setIsLoading(false);
-          setisError(true);
-          setError(response.data.error);
-        } else {
-          window.alert(
-            "Registered successfully!\nYou can head to the login page."
-          );
-          isLoading(false);
-          isError(false);
-        }
-      } catch (error) {
-        setIsLoading(false);
-        setisError(true);
-      }
+     try {
+  const response = await axios.post(`${BACK_URL}/register-user`, {
+    name,
+    email,
+    password: pass,
+  });
+
+  // If backend returns error in response body
+  if (response.data.error) {
+    setError(response.data.error);
+    setisError(true);
+    setIsLoading(false);
+    return;
+  }
+
+  // If response is successful
+  setisError(false);
+  setIsLoading(false);
+  window.alert("Registered successfully!\nYou can head to the login page.");
+  
+  // Optionally redirect:
+  // navigate("/login");
+
+} catch (error) {
+  setIsLoading(false);
+  if (error.response && error.response.data && error.response.data.error) {
+    setError(error.response.data.error);
+  } else {
+    setError("Something went wrong");
+  }
+  setisError(true);
+}
+
     } else {
       setisError(false);
       if (!name || !email || !pass) {
@@ -70,33 +67,33 @@ const Register = (props) => {
       }
 
       try {
-        console.log(BACK_URL);
-        const response = await axios.post(`${BACK_URL}/register-admin`, {
-          name: name,
-          email: email,
-          password: pass,
-        });
-        if (!response) {
-          setIsLoading(false);
-          setisError(true);
-          return;
-        } else {
-          setisError(false);
-        }
-        if (response.data.error === "Alreday registered as User") {
-          window.alert("Already registered as User");
-          setIsLoading(false);
-        } else {
-          setisError(false);
-          console.log(response.data.error);
-          setIsLoading(false);
-          window.alert("Registered successfully error");
-        }
-      } catch (error) {
-        setIsLoading(false);
-        setisError(true);
-        // console.log(error);
-      }
+  const response = await axios.post(`${BACK_URL}/register-admin`, {
+    name,
+    email,
+    password: pass,
+  });
+
+  if (response.data.error) {
+    setError(response.data.error);
+    setisError(true);
+    setIsLoading(false);
+    return;
+  }
+
+  setisError(false);
+  setIsLoading(false);
+  window.alert("Registered successfully!\nYou can head to the login page.");
+
+} catch (error) {
+  setIsLoading(false);
+  if (error.response && error.response.data && error.response.data.error) {
+    setError(error.response.data.error); // <-- show 409 errors, etc.
+  } else {
+    setError("Something went wrong");
+  }
+  setisError(true);
+}
+
     }
   };
   return (
