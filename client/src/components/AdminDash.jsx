@@ -17,12 +17,8 @@ const AdminDash = () => {
   // console.log('Login ID on page load:', loginId);
 
   useEffect(() => {
-
-    
-
     if (loginId && loginId.quizIds) {
-      getHistory();
-      
+      getHistory();  
     }
   }, [loginId]);
 
@@ -47,7 +43,7 @@ const AdminDash = () => {
       });
       if (response) {
         setQuizDetail(response.data.quizzes);
-        // console.log(quizDetail);
+        console.log("Quiz Deatils",response.data.quizzes);
       }
     } catch (error) {
       console.log("Some Error Occured getting quiz history", error);
@@ -59,6 +55,7 @@ const AdminDash = () => {
     const response = await axios.post(`${BACK_URL}/get-quiz`,{
       quizId: quizDetail[i]._id
     })
+
     if(!response){
       window.alert('Some Error Occured');
       return ;
@@ -108,6 +105,7 @@ const AdminDash = () => {
                   <th scope="col">Title</th>
                   <th scope="col">Date</th>
                   <th scope="col">Duration</th>
+                  <th scope="col" >Code</th>
                   <th scope="col">Attempted</th>
                   <th scope="col">Manage</th>
                   <th scope="col">Delete</th>
@@ -121,6 +119,7 @@ const AdminDash = () => {
                   <td>{quiz.name}</td>
                   <td>{quiz.dateCreated.split('T')[0]}</td>
                   <td>{quiz.duration} mins</td>
+                  <td>{quiz._id}</td>
                   <td>{quiz.attemptedBy.length}</td>
                   <td>
                     <VisibilityIcon onClick={() => {

@@ -34,8 +34,8 @@ export const addQuiz = async (req, res) => {
     ) {
       return res.json({ status: 422, message: "Something is missing" });
     }
-    // console.log('created by...',createdBy)
-    //  console.log('questions received...',questions);
+    console.log("add Quiz all Data",res.body);
+    console.log("Duration ",duration);
     const questionIds = await Promise.all(
       questions.map(async (question, i) => {
         // console.log('question ',i+1, question);

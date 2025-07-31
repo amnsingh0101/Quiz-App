@@ -11,7 +11,9 @@ import axios from "axios";
 import LoginContext from "./context/LoginContext.js";
 import Login from "../LoginRegister/Login.jsx";
 import { BACK_URL } from "../backend.js";
+import { useNavigate } from "react-router-dom";
 const CustomHome = () => {
+  const navigate=useNavigate();
   const [isCreated, setisCreated] = useState(false);
   const [isgetCode, setisgetCode] = useState(false);
   const [quizId, setquizId] = useState('');
@@ -27,6 +29,7 @@ const CustomHome = () => {
   const quizCodeRef = useRef(null)
 
   const copyquizCodeToClipboard = useCallback(() => {
+    
     setisCopied(true);
     quizCodeRef.current?.select();
     quizCodeRef.current?.setSelectionRange(0, 999);
@@ -99,6 +102,7 @@ const CustomHome = () => {
         window.alert('Quiz saved successfully...')
         setquizId(response.data.quizId);
         // console.log('quiz saved successfully...',response.data.quizId);
+        navigate('/admin')
       }
     }
     catch(error){

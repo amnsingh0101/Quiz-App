@@ -42,6 +42,7 @@ const startTime = new Date();
 const markedOptions = [];
 
 const UserQuiz = () => {
+  
   const location = useLocation();
   const { newDetail } = location.state || {};
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -50,9 +51,13 @@ const UserQuiz = () => {
   const [timer, setTimer] = useState(null);
   const [quizOver, setQuizOver] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
-//   const [startTime, setStartTime] = useState(null);
+  const [startTime, setStartTime] = useState(null);
   const navigate = useNavigate();
-  console.log(newDetail);
+  console.log("New Deatails",newDetail);
+  useEffect(()=>{
+      const time=new Date();
+      setStartTime(time);
+  },[])
 
   const questions = newDetail.quiz.questions;
 
@@ -140,8 +145,8 @@ const UserQuiz = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   // Set the duration of the quiz in seconds
-  const quizDuration = 10; // 5 minutes (adjust as needed)
-
+  const quizDuration = newDetail.quiz.duration*60; // 5 minutes (adjust as needed)
+  console.log("duration Time: ",quizDuration);
   useEffect(() => {
     // Initialize the timer when the component mounts
     setTimer(quizDuration);
@@ -183,6 +188,7 @@ const UserQuiz = () => {
     console.log('startTime',startTime)
     console.log('endTime',endTime)
     const timeTaken = Math.floor((endTime - startTime) / 1000)
+    console.log('timeTaken',timeTaken);
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Calculate timeTaken in seconds
   const timeTakenInMinutes = Math.floor(timeTakenInSeconds / 60);
     console.log(timeTakenInSeconds,timeTakenInMinutes);
@@ -190,7 +196,7 @@ const UserQuiz = () => {
         userId: newDetail.userId,
         quizId: newDetail.quiz._id,
         markedOptions,
-        timeTaken: timeTakenInMinutes
+        timeTaken:timeTakenInSeconds 
     })
     if(response){
         console.log(response);
@@ -280,7 +286,6 @@ const UserQuiz = () => {
 };
 
 export default UserQuiz;
-
 export const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;

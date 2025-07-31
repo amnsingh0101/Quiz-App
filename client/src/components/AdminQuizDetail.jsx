@@ -35,6 +35,7 @@ const AdminQuizDetail = () => {
       const response = await axios.post(`${BACK_URL}/admin-user-history`, {
         quizId: detail.quiz._id
       });
+      console.log ("user History:",response.data);
       if (response.data.result) {
         setUserHistory(response.data.result);
       } else {
@@ -164,7 +165,7 @@ const AdminQuizDetail = () => {
                     <tr key={index}>
                       <th scope="row">{index + 1}</th>
                       <td>{usr.name}</td>
-                      <td>{usr.timeTaken} mins</td>
+                      <td>{`${Math.floor(usr.timeTaken/60)}:${usr.timeTaken%60}`} </td>
                       <td>{usr.score}</td>
                       <td>
                         <input
